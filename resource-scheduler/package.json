@@ -1,0 +1,95 @@
+{
+  "name": "ember-resource-scheduler",
+  "version": "0.1.0",
+  "description": "Presentational, persistence-agnostic Ember addon providing a resource-timeline (horizontal) and vertical-resource-grid scheduling view, with drag-to-create/move/resize and virtualization.",
+  "keywords": [
+    "ember-addon",
+    "scheduler",
+    "timeline",
+    "drag-and-drop"
+  ],
+  "repository": "https://github.com/ixxvivxxi/ember-resource-scheduler",
+  "license": "MIT",
+  "author": "",
+  "exports": {
+    ".": "./dist/index.js",
+    "./*": "./dist/*.js",
+    "./addon-main.js": "./addon-main.cjs"
+  },
+  "files": [
+    "addon-main.cjs",
+    "declarations",
+    "dist"
+  ],
+  "scripts": {
+    "build": "rollup --config",
+    "format": "prettier . --cache --write",
+    "lint": "concurrently \"npm:lint:*(!fix)\" --names \"lint:\" --prefixColors auto",
+    "lint:fix": "concurrently \"npm:lint:*:fix\" --names \"fix:\" --prefixColors auto && npm run format",
+    "lint:format": "prettier . --cache --check",
+    "lint:hbs": "ember-template-lint . --no-error-on-unmatched-pattern",
+    "lint:hbs:fix": "ember-template-lint . --fix --no-error-on-unmatched-pattern",
+    "lint:js": "eslint . --cache",
+    "lint:js:fix": "eslint . --fix",
+    "prepack": "rollup --config",
+    "start": "rollup --config --watch",
+    "test": "echo 'A v2 addon does not have tests, run tests in test-app'"
+  },
+  "dependencies": {
+    "@embroider/addon-shim": "^1.8.9",
+    "decorator-transforms": "^2.2.2",
+    "ember-modifier": "^4.3.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.25.2",
+    "@babel/eslint-parser": "^7.25.1",
+    "@babel/runtime": "^7.25.6",
+    "@embroider/addon-dev": "^7.1.0",
+    "@eslint/js": "^9.17.0",
+    "@rollup/plugin-babel": "^6.0.4",
+    "babel-plugin-ember-template-compilation": "^2.2.5",
+    "concurrently": "^9.0.1",
+    "ember-source": "^5.4.0",
+    "ember-template-lint": "^6.0.0",
+    "eslint": "^9.17.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-ember": "^12.3.3",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-n": "^17.15.1",
+    "globals": "^15.14.0",
+    "prettier": "^3.4.2",
+    "prettier-plugin-ember-template-tag": "^2.0.4",
+    "rollup": "^4.22.5",
+    "rollup-plugin-copy": "^3.5.0"
+  },
+  "ember": {
+    "edition": "octane"
+  },
+  "ember-addon": {
+    "version": 2,
+    "type": "addon",
+    "main": "addon-main.cjs",
+    "app-js": {
+      "./components/resource-timeline.js": "./dist/_app_/components/resource-timeline.js",
+      "./components/resource-timeline/block.js": "./dist/_app_/components/resource-timeline/block.js",
+      "./components/resource-timeline/empty-cell.js": "./dist/_app_/components/resource-timeline/empty-cell.js",
+      "./components/resource-timeline/header.js": "./dist/_app_/components/resource-timeline/header.js",
+      "./components/resource-timeline/lane.js": "./dist/_app_/components/resource-timeline/lane.js",
+      "./components/resource-timeline/name-cell.js": "./dist/_app_/components/resource-timeline/name-cell.js",
+      "./components/resource-timeline/overlay.js": "./dist/_app_/components/resource-timeline/overlay.js",
+      "./components/resource-timeline/resource-row.js": "./dist/_app_/components/resource-timeline/resource-row.js",
+      "./components/resource-timeline/summary-row.js": "./dist/_app_/components/resource-timeline/summary-row.js",
+      "./components/vertical-resource-grid.js": "./dist/_app_/components/vertical-resource-grid.js",
+      "./components/vertical-resource-grid/block.js": "./dist/_app_/components/vertical-resource-grid/block.js",
+      "./components/vertical-resource-grid/empty-cell.js": "./dist/_app_/components/vertical-resource-grid/empty-cell.js",
+      "./components/vertical-resource-grid/lane.js": "./dist/_app_/components/vertical-resource-grid/lane.js",
+      "./components/vertical-resource-grid/overlay.js": "./dist/_app_/components/vertical-resource-grid/overlay.js",
+      "./components/vertical-resource-grid/resource-column.js": "./dist/_app_/components/vertical-resource-grid/resource-column.js",
+      "./components/vertical-resource-grid/time-header.js": "./dist/_app_/components/vertical-resource-grid/time-header.js",
+      "./modifiers/drop-surface.js": "./dist/_app_/modifiers/drop-surface.js",
+      "./modifiers/pointer-geometry.js": "./dist/_app_/modifiers/pointer-geometry.js",
+      "./modifiers/schedulable-block.js": "./dist/_app_/modifiers/schedulable-block.js",
+      "./modifiers/scroll-window.js": "./dist/_app_/modifiers/scroll-window.js"
+    }
+  }
+}

@@ -1,0 +1,41 @@
+/*
+ * Theming contract: every visual dimension and color the addon renders with
+ * is a custom property with a sensible default here. No JS/args changes are
+ * needed to re-theme — JS args own data and behavior only.
+ *
+ * Overriding: these defaults are declared directly on `.rs-resource-timeline`
+ * / `.rs-vertical-resource-grid` themselves, so they are *specified* values
+ * on that exact element — a value inherited from an arbitrary ancestor
+ * (e.g. via that ancestor's inline `style`) does NOT win against them,
+ * regardless of the ancestor's specificity, because inheritance only
+ * applies when an element has no specified value of its own. Override by
+ * setting the property directly on the `<ResourceTimeline>`/
+ * `<VerticalResourceGrid>` invocation itself (forwarded to its root element
+ * via `...attributes`, e.g. `<ResourceTimeline style="--rs-unit-size: 40px;"
+ * ...>`), or via a stylesheet rule at least as specific as `.rs-resource-
+ * timeline` in the consuming app.
+ */
+.rs-resource-timeline,
+.rs-vertical-resource-grid {
+  --rs-unit-size: 32px;
+  --rs-name-col-width: 90px;
+  --rs-place-col-width: 28px;
+  --rs-lane-height: 32px;
+  --rs-header-height: 32px;
+  --rs-day-shading: none;
+
+  /* vertical-resource-grid: resources are columns, so its per-lane cross
+     size is a width, and its sticky time-of-day column needs its own
+     width (an analogue of --rs-name-col-width, wider for "HH:MM" labels). */
+  --rs-lane-width: 32px;
+  --rs-time-col-width: 60px;
+
+  --rs-color-surface: #ffffff;
+  --rs-color-gridline: #e5e7eb;
+  --rs-color-weekend: rgba(218, 0, 0, 0.1);
+  --rs-color-today: #fdf4ff;
+  --rs-color-month-boundary: #6b7280;
+  --rs-color-block-default: #009ee0;
+  --rs-color-drag-preview: rgba(0, 158, 224, 0.35);
+  --rs-color-invalid-drag-preview: rgba(220, 38, 38, 0.35);
+}

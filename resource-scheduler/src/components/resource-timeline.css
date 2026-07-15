@@ -1,0 +1,296 @@
+.rs-resource-timeline {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  font-family: inherit;
+  /* A child's percentage height only resolves against a *definite*
+     ancestor height (CSS Sizing §, "percentages and indefinite sizes") —
+     without this, `&__viewport`'s `height: 100%` falls back to auto and
+     just grows to fit content instead of scrolling, however the consumer
+     sized their wrapper. */
+}
+
+.rs-resource-timeline__viewport {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+}
+
+.rs-resource-timeline__body {
+  display: flex;
+  flex-direction: row;
+  width: fit-content;
+}
+
+.rs-resource-timeline__name-column {
+  flex: 0 0 var(--rs-name-col-width);
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  background: var(--rs-color-surface);
+}
+
+.rs-resource-timeline__corner {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  box-sizing: border-box;
+  background: var(--rs-color-surface);
+  border-bottom: 1px solid var(--rs-color-gridline);
+  border-right: 1px solid var(--rs-color-gridline);
+}
+
+.rs-resource-timeline__name-cell {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  box-sizing: border-box;
+  padding: 0 8px;
+  border-bottom: 1px solid var(--rs-color-gridline);
+  border-right: 1px solid var(--rs-color-gridline);
+  overflow: hidden;
+}
+
+.rs-resource-timeline__name-label {
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.rs-resource-timeline__name-cell--activatable {
+  cursor: pointer;
+}
+
+.rs-resource-timeline__name-sublabel {
+  font-size: 11px;
+  opacity: 0.65;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.rs-resource-timeline__corner-extra {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  box-sizing: border-box;
+  background: var(--rs-color-surface);
+  border-bottom: 1px solid var(--rs-color-gridline);
+  border-right: 1px solid var(--rs-color-gridline);
+}
+
+.rs-resource-timeline__header-extra-row {
+  position: sticky;
+  z-index: 1;
+  box-sizing: border-box;
+  background: var(--rs-color-surface);
+  border-bottom: 1px solid var(--rs-color-gridline);
+}
+
+.rs-resource-timeline__place-column {
+  flex: 0 0 var(--rs-place-col-width);
+  position: sticky;
+  left: var(--rs-name-col-width);
+  z-index: 2;
+  background: var(--rs-color-surface);
+}
+
+.rs-resource-timeline__place-cell-group {
+  position: relative;
+  border-right: 1px solid var(--rs-color-gridline);
+}
+
+.rs-resource-timeline__place-cell {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  color: var(--rs-color-month-boundary);
+  border-bottom: 1px solid var(--rs-color-gridline);
+}
+
+.rs-resource-timeline__lanes-column {
+  position: relative;
+}
+
+.rs-resource-timeline__header-row {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  box-sizing: border-box;
+  background: var(--rs-color-surface);
+  border-bottom: 1px solid var(--rs-color-gridline);
+}
+
+.rs-resource-timeline__header-cell {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  border-right: 1px solid var(--rs-color-gridline);
+}
+
+.rs-resource-timeline__header-cell.is-weekend {
+  background: var(--rs-color-weekend);
+}
+
+.rs-resource-timeline__header-cell.is-today {
+  background: var(--rs-color-today);
+}
+
+.rs-resource-timeline__header-cell.is-month-boundary {
+  border-left: 2px solid var(--rs-color-month-boundary);
+}
+
+/* The pinned band: rows that stay put while the body scrolls under them (an
+   aggregate row, or a lane whose blocks are dragged down onto real resources).
+   One band per column, all pinned at the same offset — the header's height —
+   so the three stay aligned. They sit in flow above the body, so the body's
+   virtualization offsets already account for them. */
+.rs-resource-timeline__pinned-names,
+.rs-resource-timeline__pinned-places,
+.rs-resource-timeline__pinned-rows {
+  position: sticky;
+  z-index: 1;
+  box-sizing: border-box;
+  background: var(--rs-color-surface);
+  border-bottom: 2px solid var(--rs-color-gridline);
+}
+
+.rs-resource-timeline__resource-lanes {
+  position: relative;
+}
+
+/* An aggregate row: the drop surface spans the whole row, and the consumer's
+   cells are painted on top of it — see summary-row.gjs. */
+.rs-resource-timeline__summary-row {
+  position: relative;
+  box-sizing: border-box;
+  border-bottom: 1px solid var(--rs-color-gridline);
+  background-image:
+    var(--rs-day-shading, none),
+    repeating-linear-gradient(
+      to right,
+      transparent 0,
+      transparent calc(var(--rs-unit-size) - 1px),
+      var(--rs-color-gridline) calc(var(--rs-unit-size) - 1px),
+      var(--rs-color-gridline) var(--rs-unit-size)
+    );
+  background-repeat: no-repeat, repeat;
+}
+
+/* The numbers are decoration; the gesture belongs to the drop surface below
+   them. */
+.rs-resource-timeline__summary-content {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.rs-resource-timeline__lane {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  box-sizing: border-box;
+  border-bottom: 1px solid var(--rs-color-gridline);
+  /* `--rs-day-shading` (default: none) is a consumer-computed, non-repeating
+     `linear-gradient(...)` string (e.g. weekend bands + month-boundary
+     lines) — painted as a layer under the day-gridline pattern. Both layers
+     are per-lane so they render identically in every row, but since the
+     underlying CSS custom property is identical for every lane, this costs
+     nothing extra to compute (each lane just paints the same value). */
+  background-image:
+    var(--rs-day-shading, none),
+    repeating-linear-gradient(
+      to right,
+      transparent 0,
+      transparent calc(var(--rs-unit-size) - 1px),
+      var(--rs-color-gridline) calc(var(--rs-unit-size) - 1px),
+      var(--rs-color-gridline) var(--rs-unit-size)
+    );
+  background-repeat: no-repeat, repeat;
+}
+
+.rs-resource-timeline__empty-cell {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+.rs-resource-timeline__empty-cell:hover {
+  background: rgba(0, 0, 0, 0.03);
+}
+
+.rs-resource-timeline__block {
+  position: absolute;
+  top: 2px;
+  bottom: 2px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  padding: 0 6px;
+  overflow: hidden;
+  border-radius: 4px;
+  background: var(--rs-color-block-default);
+  color: #ffffff;
+  font-size: 12px;
+  cursor: grab;
+  user-select: none;
+  touch-action: none;
+  z-index: 1;
+}
+
+.rs-resource-timeline__block--drag-source {
+  opacity: 0.35;
+}
+
+.rs-resource-timeline__block-handle {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 6px;
+  cursor: ew-resize;
+}
+
+.rs-resource-timeline__block-handle--start {
+  left: 0;
+}
+
+.rs-resource-timeline__block-handle--end {
+  right: 0;
+}
+
+.rs-resource-timeline__block-label {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rs-resource-timeline__overlay {
+  position: absolute;
+  top: 2px;
+  bottom: 2px;
+  box-sizing: border-box;
+  border-radius: 4px;
+  background: var(--rs-color-drag-preview);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.rs-resource-timeline__overlay--invalid {
+  background: var(--rs-color-invalid-drag-preview);
+}

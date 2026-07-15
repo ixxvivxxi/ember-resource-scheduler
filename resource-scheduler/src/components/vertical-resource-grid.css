@@ -1,0 +1,212 @@
+/*
+ * Direct transposition of resource-timeline.css: time runs vertically here
+ * (top/height instead of left/width) and resources are columns laid out
+ * side-by-side (left/width instead of stacked rows).
+ */
+.rs-vertical-resource-grid {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  font-family: inherit;
+  /* A child's percentage height only resolves against a *definite*
+     ancestor height (CSS Sizing §, "percentages and indefinite sizes") —
+     without this, `&__viewport`'s `height: 100%` falls back to auto and
+     just grows to fit content instead of scrolling, however the consumer
+     sized their wrapper. */
+}
+
+.rs-vertical-resource-grid__viewport {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+}
+
+.rs-vertical-resource-grid__body {
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+  height: fit-content;
+}
+
+.rs-vertical-resource-grid__header-row {
+  display: flex;
+  flex-direction: row;
+  flex: 0 0 var(--rs-header-height);
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: var(--rs-color-surface);
+}
+
+/* Flex items default to flex-shrink:1, which would squeeze/misalign fixed-
+   size resource columns and headers when their combined natural width
+   exceeds the viewport — the container (body, made fit-content above)
+   should grow instead, exactly like resource-timeline's plain-block rows
+   (which don't need this since they aren't flex items at all). */
+.rs-vertical-resource-grid__header-row > *,
+.rs-vertical-resource-grid__columns-content > * {
+  flex-shrink: 0;
+}
+
+.rs-vertical-resource-grid__corner {
+  flex: 0 0 var(--rs-time-col-width);
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  box-sizing: border-box;
+  background: var(--rs-color-surface);
+  border-right: 1px solid var(--rs-color-gridline);
+  border-bottom: 1px solid var(--rs-color-gridline);
+}
+
+.rs-vertical-resource-grid__resource-header-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  padding: 0 8px;
+  border-right: 1px solid var(--rs-color-gridline);
+  border-bottom: 1px solid var(--rs-color-gridline);
+  overflow: hidden;
+}
+
+.rs-vertical-resource-grid__resource-header-label {
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.rs-vertical-resource-grid__resource-header-sublabel {
+  font-size: 11px;
+  opacity: 0.65;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.rs-vertical-resource-grid__lanes-row {
+  display: flex;
+  flex-direction: row;
+  position: relative;
+}
+
+.rs-vertical-resource-grid__time-header {
+  flex: 0 0 var(--rs-time-col-width);
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  box-sizing: border-box;
+  background: var(--rs-color-surface);
+  border-right: 1px solid var(--rs-color-gridline);
+}
+
+.rs-vertical-resource-grid__columns-content {
+  display: flex;
+  flex-direction: row;
+}
+
+.rs-vertical-resource-grid__time-header-cell {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  border-bottom: 1px solid var(--rs-color-gridline);
+}
+
+.rs-vertical-resource-grid__resource-column {
+  position: relative;
+}
+
+.rs-vertical-resource-grid__lane {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  box-sizing: border-box;
+  border-right: 1px solid var(--rs-color-gridline);
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent calc(var(--rs-unit-size) - 1px),
+    var(--rs-color-gridline) calc(var(--rs-unit-size) - 1px),
+    var(--rs-color-gridline) var(--rs-unit-size)
+  );
+}
+
+.rs-vertical-resource-grid__empty-cell {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+.rs-vertical-resource-grid__empty-cell:hover {
+  background: rgba(0, 0, 0, 0.03);
+}
+
+.rs-vertical-resource-grid__block {
+  position: absolute;
+  left: 2px;
+  right: 2px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  padding: 2px 4px;
+  overflow: hidden;
+  border-radius: 4px;
+  background: var(--rs-color-block-default);
+  color: #ffffff;
+  font-size: 12px;
+  cursor: grab;
+  user-select: none;
+  touch-action: none;
+  z-index: 1;
+}
+
+.rs-vertical-resource-grid__block--drag-source {
+  opacity: 0.35;
+}
+
+.rs-vertical-resource-grid__block-handle {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 6px;
+  cursor: ns-resize;
+}
+
+.rs-vertical-resource-grid__block-handle--start {
+  top: 0;
+}
+
+.rs-vertical-resource-grid__block-handle--end {
+  bottom: 0;
+}
+
+.rs-vertical-resource-grid__block-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  overflow-wrap: break-word;
+}
+
+.rs-vertical-resource-grid__overlay {
+  position: absolute;
+  left: 2px;
+  right: 2px;
+  box-sizing: border-box;
+  border-radius: 4px;
+  background: var(--rs-color-drag-preview);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.rs-vertical-resource-grid__overlay--invalid {
+  background: var(--rs-color-invalid-drag-preview);
+}

@@ -1,0 +1,27 @@
+{
+  "private": true,
+  "repository": "",
+  "license": "MIT",
+  "author": "",
+  "scripts": {
+    "build": "npm run build --workspace resource-scheduler",
+    "lint": "npm run lint --workspaces --if-present",
+    "lint:fix": "npm run lint:fix --workspaces --if-present",
+    "prepare": "npm run build",
+    "start": "concurrently 'npm:start:*' --restart-after 5000 --prefixColors auto",
+    "start:addon": "npm start --workspace resource-scheduler -- --no-watch.clearScreen",
+    "start:test-app": "npm start --workspace test-app",
+    "test": "npm run test --workspaces --if-present",
+    "test:ember": "npm run test:ember --workspaces --if-present"
+  },
+  "packageManager": "npm@11.0.0",
+  "devDependencies": {
+    "concurrently": "^9.1.2",
+    "prettier": "^3.0.3",
+    "prettier-plugin-ember-template-tag": "^2.0.2"
+  },
+  "workspaces": [
+    "resource-scheduler",
+    "test-app"
+  ]
+}
